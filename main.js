@@ -191,7 +191,7 @@ const loadGenreSection = () => {
 
 //!NOTE: Getting trending movies for home page.
 const getTrendingMovies = (data, url) => {
-  //Setting the heading according to day or week through url!
+  // Setting the heading according to day or week through url!
   if (url.includes("day")) {
     main.innerHTML += `<h2>Trending Movies Today🔥</h2>`;
   } else {
@@ -211,8 +211,8 @@ const getTrendingMovies = (data, url) => {
       baseImgUrl + poster_path
     }" alt="poster" />
         <div class="movie-info">
+        <span class="rating" onload="">${vote_average.toFixed(1)}⭐</span>
           <h3>${addDots(title)}</h3>
-          <span class="rating">${vote_average.toFixed(1)}⭐</span>
         </div>`;
     //*Putting every newly created movie-card into the container.
     container.appendChild(movieCard);
@@ -364,8 +364,8 @@ form.onsubmit = (e) => {
 //?Adding dots In the TItle if its too long to fit in the movieCard
 
 const addDots = (title) => {
-  if (title.length > 20) {
-    title = title.slice(0, 15) + "...";
+  if (title.length > 25) {
+    title = title.slice(0, 20) + "...";
   }
   return title;
 };
@@ -376,10 +376,12 @@ const resetGenres = () => {
     }
 }
 
-
 const getId = (id) => {
-    
-    console.log(id);
+   showDetails(id);
+}
+
+const showDetails = (id) => {
+
 }
 
 

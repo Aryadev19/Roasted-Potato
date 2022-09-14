@@ -34,13 +34,21 @@ body {
   background-color: #2c3333;
   color: aliceblue;
   font-family: "Rubik", sans-serif;
+  position: relative;
+
 }
 
 main{
   text-align: center;
 }
 
-
+span{
+  position: absolute;
+  top:-204px;
+  left: 0;
+  background-color: rgba(168, 169, 170, 0.4); 
+  border-radius: 10px;
+}
 
 h2 {
   margin:2rem;
@@ -67,6 +75,9 @@ iframe{
   display: block;
 }
 
+
+
+
 .navbar {
   display: flex;
   justify-content: flex-end;
@@ -89,32 +100,40 @@ iframe{
 }
 
 .movieCard {
-  width: 250px;
+  height: 200px;
+  width: 133.325px;
   transition: transform .2s;
   margin: 3rem;
-  background-color: #1b2430;
-  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 10px 7px -3px rgba(0, 0, 0, 0.75);
   border-radius: 10px;
+  font-size: 1rem;
 }
 
 .movieCard:hover {
-  box-shadow: 10px 10px 7px -3px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
   transform: scale(1.1);
 }
 
 .movieCard img {
-  width: 250px;
+  height: 200px;
   border-radius: 10px;
   position: relative;
 }
 
+.movieCard img:hover {
+filter: blur(.3px);
+
+}
+
 .movie-info {
   display: flex;
-  justify-content: space-between;
+  position: relative;
+  justify-content: center;
   align-items: center;
   padding: 1rem;
   font-weight: bold;
-  overflow: hidden;
+  font-size: .9rem;
+  /* overflow: hidden; */
 }
 .rating {
   padding: 3px;
@@ -146,7 +165,7 @@ iframe{
 
 .search-results{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-around;
   align-items: center;
@@ -181,23 +200,14 @@ h1{
   margin-bottom: 2rem;
 }
 
-.movieInfo{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 3rem;
 
-}
 
 
 
 @media (max-width: 700px){
-  .movieCard{
-    width: 200px;
-  }
-  .movieCard img{
-    width: 200px;
+  .container{
+    flex-wrap: wrap;
+
   }
   .genere{
     padding: .5rem;
@@ -217,3 +227,5 @@ h1{
   }  
 
 }
+
+
