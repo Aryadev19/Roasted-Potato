@@ -79,9 +79,9 @@ const Genres = [
 
 //*Url for home page.
 const apiKey = "api_key=d7cfdb51804908a83049f752b7e84d73";
-const trendDayMovieUrl = `https://api.themoviedb.org/3/trending/movie/day?${apiKey}`;
+
 const trendWeekMovieUrl = `https://api.themoviedb.org/3/trending/movie/week?${apiKey}`;
-const trendDayTvUrl = `https://api.themoviedb.org/3/trending/tv/day?${apiKey}`;
+
 const trendWeekTvUrl = `https://api.themoviedb.org/3/trending/tv/week?${apiKey}`;
 
 //*Image and search url.
@@ -93,11 +93,9 @@ const latestMoviesUrl = `https://api.themoviedb.org/3/movie/latest?${apiKey}`;
 const nowPlayingMoviesUrl = `https://api.themoviedb.org/3/movie/now_playing?${apiKey}`;
 const popularMoviesUrl = `https://api.themoviedb.org/3/movie/popular?${apiKey}`;
 const topRatedMoviesUrl = `https://api.themoviedb.org/3/movie/top_rated?${apiKey}`;
-const upComingMoviesUrl = `https://api.themoviedb.org/3/movie/upcoming?${apiKey}`;
 
 //*Url for series page.
 const latesSeriesUrl = `https://api.themoviedb.org/3/tv/latest?${apiKey}`;
-const seriesAiringTodayUrl = `https://api.themoviedb.org/3/tv/airing_today?${apiKey}`;
 const seriesOnAir = `https://api.themoviedb.org/3/tv/on_the_air?${apiKey}`;
 const popularSeriesUrl = `https://api.themoviedb.org/3/tv/popular?${apiKey}`;
 const topRatedSeriesUrl = `https://api.themoviedb.org/3/tv/top_rated?${apiKey}`;
@@ -113,6 +111,9 @@ const generes = document.querySelector("#generes");
 const main = document.querySelector("main");
 const form = document.querySelector("form");
 const input = document.querySelector("input");
+const container = document.querySelector(".container");
+const container1 = document.querySelector("#container1");
+const container2 = document.querySelector("#container2");
 
 //*Making the api get request.
 const apiCall = (url) => {
@@ -120,7 +121,7 @@ const apiCall = (url) => {
     .then((res) => res.json())
     .then((data) => {
       if (url.includes("tv")) {
-        if (url.includes("day" || "week")) {
+        if (url.includes("week")) {
           getTrendingSeries(data.results, url);
         } else {
           showSeries(data.results, url);
@@ -129,7 +130,7 @@ const apiCall = (url) => {
         if (url.includes("search")) {
           showSearch(data.results);
         } else {
-          if (url.includes("day" || "week")) {
+          if (url.includes("week")) {
             getTrendingMovies(data.results, url);
           } else {
             showMovies(data.results, url);
@@ -141,9 +142,7 @@ const apiCall = (url) => {
 
 //Calling the api by providing different url for home page
 const loadHomePage = () => {
-  apiCall(trendDayMovieUrl);
   apiCall(trendWeekMovieUrl);
-  apiCall(trendDayTvUrl);
   apiCall(trendWeekTvUrl);
 };
 
@@ -152,11 +151,9 @@ const loadMoviePage = () => {
   apiCall(nowPlayingMoviesUrl);
   apiCall(popularMoviesUrl);
   apiCall(topRatedMoviesUrl);
-  apiCall(upComingMoviesUrl);
 };
 
 const loadSeriesPage = () => {
-  apiCall(seriesAiringTodayUrl);
   apiCall(seriesOnAir);
   apiCall(popularSeriesUrl);
   apiCall(topRatedSeriesUrl);
@@ -180,10 +177,11 @@ const loadGenreSection = () => {
             setGenre.splice(i, 1);
           }
         }
-      }if(setGenre.length > 0) {
-      apiCall(discoverUrl + encodeURI(setGenre.join(",")));
-      }else{
-            resetGenres();
+      }
+      if (setGenre.length > 0) {
+        apiCall(discoverUrl + encodeURI(setGenre.join(",")));
+      } else {
+        resetGenres();
       }
     };
   });
@@ -191,17 +189,9 @@ const loadGenreSection = () => {
 
 //!NOTE: Getting trending movies for home page.
 const getTrendingMovies = (data, url) => {
-  // Setting the heading according to day or week through url!
-  if (url.includes("day")) {
-    main.innerHTML += `<h2>Trending Movies Today🔥</h2>`;
-  } else {
-    main.innerHTML += `<h2>Trending Movies This Week🔥</h2>`;
-  }
-  const container = document.createElement("div");
-  container.className = "container";
   data.forEach((movie) => {
     //? for movies the title variable in the json is 'title' but for tv it's 'name'
-    const { vote_average, title,id , poster_path } = movie;
+    const { vote_average, title, id, poster_path } = movie;
     const movieCard = document.createElement("div");
     movieCard.classList.add("movieCard");
     movieCard.id = id;
@@ -211,30 +201,19 @@ const getTrendingMovies = (data, url) => {
       baseImgUrl + poster_path
     }" alt="poster" />
         <div class="movie-info">
+        <h3>${addDots(title)}</h3>
         <span class="rating" onload="">${vote_average.toFixed(1)}⭐</span>
-          <h3>${addDots(title)}</h3>
         </div>`;
     //*Putting every newly created movie-card into the container.
-    container.appendChild(movieCard);
+    container1.appendChild(movieCard);
   });
-  //*Finally adding the container element to the main tag.
-  main.appendChild(container);
 };
 
 //!NOTE: Getting trending series for home page.
 const getTrendingSeries = (data, url) => {
-  //Setting the heading according to day or week through url!
-  if (url.includes("day")) {
-    main.innerHTML += `<h2>Trending Tv Series Today🔥</h2>`;
-  } else {
-    main.innerHTML += `<h2>Trending Tv Series This Week🔥</h2>`;
-  }
-  //*Creating a new container for the movie-cards.
-  const container = document.createElement("div");
-  container.className = "container";
   data.forEach((tv) => {
     //? for movies the title variable in the json is 'title' but for tv it's 'name'
-    const { vote_average, name,id , poster_path } = tv;
+    const { vote_average, name, id, poster_path } = tv;
     const movieCard = document.createElement("div");
     movieCard.classList.add("movieCard");
     movieCard.id = id;
@@ -247,22 +226,18 @@ const getTrendingSeries = (data, url) => {
           <span class="rating">${vote_average.toFixed(1)}⭐</span>
         </div>`;
     //*Putting every newly created movie-card into the container.
-    container.appendChild(movieCard);
+    container2.appendChild(movieCard);
   });
-  //*Finally adding the container element to the main tag.
-  main.appendChild(container);
 };
 
 //?shows movies on the movie page.
 const showMovies = (data, url) => {
   if (url.includes("now_playing")) {
     main.innerHTML += "<h2>Now Playing📽️</h2>";
-  } else if (url.includes("now_playing")) {
-    main.innerHTML += "<h2>Popular❤️‍🔥</h2>";
   } else if (url.includes("popular")) {
-    main.innerHTML += "<h2>Top Rated🌟</h2>";
+    main.innerHTML += "<h2>Popular❤️‍🔥</h2>";
   } else if (url.includes("top_rated")) {
-    main.innerHTML += "<h2>UpComing⌛</h2>";
+    main.innerHTML += "<h2>Top Rated🌟</h2>";
   } else if (url.includes("discover")) {
     main.innerHTML = "<h2>Results</h2>";
   }
@@ -271,7 +246,7 @@ const showMovies = (data, url) => {
   const container = document.createElement("div");
   container.className = "container";
   data.forEach((movie) => {
-    const { vote_average, title,id , poster_path } = movie;
+    const { vote_average, title, id, poster_path } = movie;
     const movieCard = document.createElement("div");
     movieCard.classList.add("movieCard");
     movieCard.id = id;
@@ -290,21 +265,21 @@ const showMovies = (data, url) => {
 };
 
 const showSeries = (data, url) => {
-  if (url.includes("now_playing")) {
+  if (url.includes("on_the_air")) {
     main.innerHTML += "<h2>Now Playing📽️</h2>";
   } else if (url.includes("now_playing")) {
-    main.innerHTML += "<h2>Popular❤️‍🔥</h2>";
+    main.innerHTML += "<h2></h2>";
   } else if (url.includes("popular")) {
-    main.innerHTML += "<h2>Top Rated🌟</h2>";
+    main.innerHTML += "<h2>Popular❤️‍🔥</h2>";
   } else if (url.includes("top_rated")) {
-    main.innerHTML += "<h2>UpComing⌛</h2>";
+    main.innerHTML += "<h2>Top Rated🌟</h2>";
   }
 
   //*Creating a new container for the movie-cards.
   const container = document.createElement("div");
   container.className = "container";
   data.forEach((movie) => {
-    const { vote_average, name,id , poster_path } = movie;
+    const { vote_average, name, id, poster_path } = movie;
     const movieCard = document.createElement("div");
     movieCard.classList.add("movieCard");
     movieCard.id = id;
@@ -324,12 +299,11 @@ const showSeries = (data, url) => {
 
 const showSearch = (data) => {
   //? Reseting the main tag innerHTML for the search results.
-  main.innerHTML =
-    "<h2 class='searchHeading'>Here's what Roasted Potato found!</h2>";
+  main.innerHTML =" ";
   //? Adding the 'search-results' class only for css to work for search results
-  main.classList.add("search-results");
+  main.classList.add("container");
   data.forEach((movie) => {
-    const { vote_average, title,id , poster_path } = movie;
+    const { vote_average, title, id, poster_path } = movie;
     const movieCard = document.createElement("div");
     movieCard.classList.add("movieCard");
     movieCard.id = id;
@@ -356,7 +330,7 @@ form.onsubmit = (e) => {
     apiCall(searchUrl + "&query=" + searchTerm);
   } else {
     window.location = "/index.html";
-    main.innerHTML = "";
+    main.innerHTML = " ";
     loadHomePage();
   }
 };
@@ -371,17 +345,13 @@ const addDots = (title) => {
 };
 
 const resetGenres = () => {
-    if(setGenre.length==0){
-        main.innerHTML = "<h2>Please Choose a Genre</h2>";
-    }
-}
+  if (setGenre.length == 0) {
+    main.innerHTML = "<h2>Please Choose a Genre</h2>";
+  }
+};
 
 const getId = (id) => {
-   showDetails(id);
-}
+  showDetails(id);
+};
 
-const showDetails = (id) => {
-
-}
-
-
+const showDetails = (id) => {};
