@@ -167,6 +167,11 @@ h1 {
     cursor: pointer;
   }
 
+  
+.selected {
+  background-color: #5bb318;
+}
+
   input {
     padding-left: 0;
   }
